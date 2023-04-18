@@ -58,3 +58,19 @@ exports.updateMassageShop = async (req, res, next) => {
     }
 
 };
+
+//@desc     Delete massage shop
+//@route    DELETE /api/v1/massageShops/:id
+//@access   Private
+exports.deleteMassageShop = async (req, res, next) => {
+    try {
+        const shop = await MassageShop.findById(req.params.id);
+        if (!shop) {
+            return res.status(400).json({ success: false });
+        }
+        shop.remove();
+        res.status(200).json({ success: true, data: {} });
+    } catch (err) {
+        res.status(400).json({ success: false, err: err });
+    }
+};
