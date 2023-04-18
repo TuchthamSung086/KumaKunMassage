@@ -19,11 +19,12 @@ information includes the name, address, telephone number, and open-close time.
 8. The system shall allow the admin to edit any massage reservation.
 9. The system shall allow the admin to delete any massage reservation
 
+
 Non-Functional Requirements
 
 Security: 
 
-• The system shall authenticate users using usernamepassword.
+• The system shall authenticate users using username, password.
 
 • The system shall be able to keep user’s transactions confidential.
 
@@ -31,7 +32,7 @@ Performance:
 
 • The system shall response to a request in 3 seconds.
 
-• Usability:
+Usability:
 
 • The system shall be used and test via Postman.
 
