@@ -40,3 +40,21 @@ exports.createMassageShop = async (req, res, next) => {
     res.status(201).json({ success: true, data: hospital });
 };
 
+//@desc     Update massage shop
+//@route    PUT /api/v1/massageShops/:id
+//@access    Private
+exports.updateMassageShop = async (req, res, next) => {
+    try {
+        const shop = await MassageShop.findByIdAndUpdate(req.params.id, req.body, {
+            new: true,
+            runValidators: true
+        });
+        if (!shop) {
+            return res.status(400).json({ success: false });
+        }
+        res.status(200).json({ success: true, data: shop });
+    } catch (err) {
+        res.status(400).json({ success: false });
+    }
+
+};
