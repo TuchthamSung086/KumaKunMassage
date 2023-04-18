@@ -2,6 +2,17 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
+const reservation = new mongoose.Schema({
+    shopname: {
+        type: String,
+        required: [true, 'Please provide the massage shop name.']
+    },
+    datetime: {
+        type: Date,
+        required: [true, 'Please provide date and time of reservation.'],
+    }
+});
+
 const UserSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -34,6 +45,10 @@ const UserSchema = new mongoose.Schema({
             /^\d{9,10}$/,
             'Please add a valid telephone number'
         ]
+    },
+    reservation: {
+        type: [reservation],
+        default: undefined,
     },
     resetPasswordToken: String,
     resetPasswordExpire: Date,
