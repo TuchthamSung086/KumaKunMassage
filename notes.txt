@@ -1,0 +1,8 @@
+Models:
+    User
+        user
+        admin
+    MassageShop
+    MassageReservation
+
+Universal Password: 123456
