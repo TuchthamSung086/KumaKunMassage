@@ -74,3 +74,25 @@ exports.getReservations = async (req, res, next) => {
         return res.status(500).json({ success: false, message: "Cannot find Reservation" });
     }
 }
+
+//@desc     Get single reservation
+//@route    GET /api/v1/reservations:id
+//@access   Public
+exports.getReservation = async (req, res, next) => {
+    try {
+        const reservation = await Reservation.findById(req.params.id).populate({
+            path: 'massageShop',
+            select: 'name address tel opentime closetime'
+        });
+        if (!reservation) {
+            return res.status(404).json({ success: false, message: `No reservation with the id of ${req.params.id}` });
+        }
+        res.status(200).json({
+            success: true,
+            data: reservation
+        });
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({ success: false, message: "Cannot find Reservation" });
+    }
+}
