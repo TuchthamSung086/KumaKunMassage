@@ -96,3 +96,35 @@ exports.getReservation = async (req, res, next) => {
         return res.status(500).json({ success: false, message: "Cannot find Reservation" });
     }
 }
+
+//@desc     Update reservation
+//@route    PUT /api/v1/reservation/:id
+//@access   Private
+exports.updateReservation = async (req, res, next) => {
+    try {
+        let reservation = await Reservation.findById(req.params.id);
+
+        if (!reservation) {
+            return res.status(404).json({ success: false, message: `No reservation with the id of ${req.params.id}` });
+
+        }
+
+        // Make sure user is the appointment owner
+        if (reservation.user.toString() !== req.user.id && req.user.role !== 'admin') {
+            return res.status(401).json({ success: false, message: `User ${req.user.id} is not authorized to update this reservation` });
+        }
+
+        reservation = await Reservation.findByIdAndUpdate(req.params.id, req.body, {
+            new: true,
+            runValidators: true
+        });
+
+        res.status(200).json({
+            success: true,
+            data: reservation
+        });
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({ success: false, message: "Cannot update Reservation" });
+    }
+};
