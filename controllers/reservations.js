@@ -1,35 +1,43 @@
 const MassageShop = require('../models/MassageShop');
-
+const User = require('../models/User');
+const Reservation = require('../models/Reservation');
+//@desc     Create single reservation
+//@route    POST /api/v1/massageShops/:id
+//@access   Private
 exports.makeReservation = async (req, res, next) => {
     try {
-        req.body.hospital = req.params.hospitalId;
 
-        const hospital = await Hospital.findById(req.params.hospitalId);
+        const params = Object.values(req.params);
+        console.log(params);
+        const shopId = req.params.massageShopId;
+        const userId = req.user.id;
 
-        if (!hospital) {
-            return res.status(404).json({ success: false, message: `No hospital with the id of ${req.params.hospitalId}` })
+        // check if shop in database
+        const shop = await MassageShop.findById(shopId);
+        if (!shop) {
+            return res.status(404).json({ success: false, message: `No massage shop with the id of ${shopId}` })
         }
-
-        // add user Id to req.body
-        req.body.user = req.user.id;
 
         // Check for existed appointment
-        const existedAppointments = await Appointment.find({ user: req.user.id });
+        const user = await User.findById(userId);
+        const existingReservations = await Reservation.find({ user: userId });
 
-        // If the user is not an admim, they can only create 3 appointment.
-        if (existedAppointments.length >= 3 && req.user.role !== 'admin') {
-            return res.status(400).json({ success: false, message: `The user with Id ${req.user.id} has already made 3 appointments.` });
-
+        // If the user is not an admin, they can only make 3 reservations.
+        if (existingReservations.length >= 3 && req.user.role !== 'admin') {
+            return res.status(400).json({ success: false, message: `The user with Id ${userId} has already made 3 reservations.` });
         }
 
-        const appointment = await Appointment.create(req.body);
+        // create reservation
+        req.body.massageShop = shopId;
+        req.body.user = userId;
+        const reservation = await Reservation.create(req.body);
 
         res.status(200).json({
             success: true,
-            data: appointment
+            data: reservation
         });
     } catch (err) {
         console.log(err);
-        return res.status(500).json({ success: false, message: "Cannot create Appointment" });
+        return res.status(500).json({ success: false, message: "Cannot create reservation" });
     }
 }
