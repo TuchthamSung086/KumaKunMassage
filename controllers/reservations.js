@@ -1,6 +1,7 @@
 const MassageShop = require('../models/MassageShop');
 const User = require('../models/User');
 const Reservation = require('../models/Reservation');
+
 //@desc     Create single reservation
 //@route    POST /api/v1/massageShops/:id
 //@access   Private
@@ -39,5 +40,37 @@ exports.makeReservation = async (req, res, next) => {
     } catch (err) {
         console.log(err);
         return res.status(500).json({ success: false, message: "Cannot create reservation" });
+    }
+}
+
+//@desc     Get all reservations
+//@route    Get /api/v1/reservations
+//@access   Public
+exports.getReservations = async (req, res, next) => {
+    let query;
+
+    //General users can see only their appointments!
+    if (req.user.role !== 'admin') {
+        query = Reservation.find({ user: req.user.id }).populate({
+            path: 'massageShop',
+            select: 'name address tel opentime closetime'
+        });
+    } else { // If you are an admin, you can see all~
+        query = Reservation.find().populate({
+            path: 'massageShop',
+            select: 'name address tel opentime closetime'
+        });
+    }
+    try {
+        const reservations = await query;
+
+        res.status(200).json({
+            success: true,
+            count: reservations.length,
+            data: reservations
+        });
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({ success: false, message: "Cannot find Reservation" });
     }
 }

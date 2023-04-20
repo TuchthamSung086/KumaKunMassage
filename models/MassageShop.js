@@ -34,6 +34,24 @@ const MassageShopSchema = new mongoose.Schema({
             /^([01]\d|2[0-3])[0-5]\d$/,
             'Please add a valid time in this format [hhmm] such as 1530 for 3:30PM']
     },
+}, {
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true }
+});
+
+// Cascade delete reservations when a massage shop is deleted
+MassageShopSchema.pre('remove', async function (next) {
+    console.log(`Reservations beig removed from massage shop ${this._id}`);
+    await this.model('Reservation').deleteMany({ massageShop: this._id });
+    next();
+});
+
+// Reverse populate with virtuals
+MassageShopSchema.virtual('reservations', {
+    ref: 'Reservation',
+    localField: "_id",
+    foreignField: "massageShop",
+    justOne: false
 });
 
 module.exports = mongoose.model('MassageShop', MassageShopSchema);
