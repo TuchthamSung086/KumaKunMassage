@@ -35,6 +35,11 @@ const UserSchema = new mongoose.Schema({
             'Please add a valid telephone number'
         ]
     },
+    googleCalendarCSV: {
+        type: String,
+        required: false,
+        default: '',
+    },
     resetPasswordToken: String,
     resetPasswordExpire: Date,
     createdAt: {

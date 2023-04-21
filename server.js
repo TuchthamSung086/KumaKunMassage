@@ -25,6 +25,7 @@ const auth = require('./routes/auth');
 const appointments = require('./routes/appointments');
 const massageShops = require('./routes/massageShops');
 const reservations = require('./routes/reservations');
+const calendar = require('./routes/calendar');
 
 // Set app
 const app = express();
@@ -80,6 +81,7 @@ app.use("/api/v1/hospitals", hospitals);
 app.use('/api/v1/appointments', appointments);
 app.use('/api/v1/massageShops', massageShops);
 app.use('/api/v1/reservations', reservations);
+app.use('/api/v1/calendar', calendar);
 app.use("/api/v1/auth", auth);
 
 // Cookie Parser
