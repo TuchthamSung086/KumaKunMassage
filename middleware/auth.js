@@ -29,6 +29,13 @@ exports.protect = async (req, res, next) => {
     }
 }
 
+exports.verified = (params={ignoreAdmin:true}) => async (req, res, next) => {
+    if (!req.user.isVerified && !(req.user.role === "admin" && params.ignoreAdmin)) {
+        return res.status(401).json({ success: false, message: "User has not verified." });
+    }
+    next();
+}
+
 //at the end of file
 // Grant access to specific roles
 exports.authorize = (...roles) => {
