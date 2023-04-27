@@ -67,10 +67,7 @@ exports.getCSV = async (req, res, next) => {
             select: 'name address tel opentime closetime'
         });
 
-        res.status(200).json({
-            success: true,
-            data: makeCSVString(reservations),
-        });
+        res.setHeader('content-type', 'text/csv').status(200).send(makeCSVString(reservations));
     } catch (err) {
         res.status(400).json({ success: false, message: "Calendar CSV Update error caught." });
     }
