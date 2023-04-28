@@ -56,6 +56,7 @@ const UserSchema = new mongoose.Schema({
         Math.random().toString(36).substring(2, 15)
       );
     },
+    select: false,
   },
 });
 
