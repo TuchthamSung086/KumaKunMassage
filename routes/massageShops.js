@@ -15,6 +15,6 @@ router.use('/:massageShopId/reservations/', reservationRouter);
 
 
 router.route('/').get(getMassageShops).post(protect, verified(), authorize('admin'), createMassageShop);
-router.route('/:id').get(getMassageShop).put(protect, verified(), authorize('admin'), updateMassageShop).delete(protect, authorize('admin'), deleteMassageShop);
+router.route('/:id').get(getMassageShop).put(protect, verified(), authorize('admin'), updateMassageShop).delete(protect, verified(), authorize('admin'), deleteMassageShop);
 
 module.exports = router;
