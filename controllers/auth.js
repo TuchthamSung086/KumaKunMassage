@@ -8,6 +8,11 @@ exports.register = async (req, res, next) => {
   try {
     const { name, email, password, role, tel } = req.body;
 
+    // If email in DB, don't continue
+    if (User.find({ email: email }) != null) {
+      res.status(409).json({ success: false, message: "This email is already used." });
+    }
+
     //Create User
     const user = await User.create({
       name,
@@ -16,6 +21,7 @@ exports.register = async (req, res, next) => {
       role,
       tel,
     });
+
     // Create token
     // const token = user.getSignedJwtToken();
     // res.status(200).json({ success: true, token });
@@ -24,7 +30,7 @@ exports.register = async (req, res, next) => {
     }
     sendTokenResponse(user, 200, res);
   } catch (err) {
-    res.status(400).json({ success: false });
+    res.status(400).json({ success: false, err: err });
     console.log(err.stack);
   }
 };
