@@ -18,8 +18,6 @@ exports.protect = async (req, res, next) => {
         //Verify token
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-        console.log(decoded);
-
         req.user = await User.findById(decoded.id);
 
         next();
@@ -29,7 +27,7 @@ exports.protect = async (req, res, next) => {
     }
 }
 
-exports.verified = (params={ignoreAdmin:true}) => async (req, res, next) => {
+exports.verified = (params = { ignoreAdmin: true }) => async (req, res, next) => {
     if (!req.user.isVerified && !(req.user.role === "admin" && params.ignoreAdmin)) {
         return res.status(401).json({ success: false, message: "User has not verified." });
     }
