@@ -35,6 +35,9 @@ exports.register = async (req, res, next) => {
   }
 };
 
+//@desc Verify user correspond to token
+//@route GET /api/v1/auth/verify/:token
+//@access Public
 exports.verify = async (req, res) => {
   if (!req.params.token) {
     return res.status(400).json({ success: false, msg: "No token provided" });
@@ -56,6 +59,40 @@ exports.verify = async (req, res) => {
   }
 
   return res.status(200).json({ success: true, msg: "Verify user" });
+};
+
+//@desc Reset and resend verification token
+//@route POST /api/v1/auth/verify/resend
+//@access Private
+exports.resendToken = async (req, res) => {
+  let user = req.user;
+
+  if (user.isVerified) {
+    return res
+      .status(400)
+      .json({ success: false, msg: "User is already verified" });
+  }
+
+  // Reset verification token to default value
+  const newToken = User.generateToken();
+  console.log("newToken is ", newToken);
+  console.log("user is ", user);
+
+  user = await User.findByIdAndUpdate(
+    user.id,
+    {
+      verificationToken: newToken,
+    },
+    { new: true }
+  ).select("+verificationToken");
+
+  console.log("user now is ", user);
+
+  await sendVerificationEmail(user, req);
+
+  return res
+    .status(200)
+    .json({ success: true, msg: "Verification email sent" });
 };
 
 //@desc         Login User
