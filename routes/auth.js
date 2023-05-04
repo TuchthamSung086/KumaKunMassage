@@ -10,7 +10,7 @@ router.get('/verify/:token', verify);
 router.post('/verify/resend', protect, resendToken);
 router.post('/login', login);
 router.get('/me', protect, getMe);
-router.get('/logout', logout);
+router.get('/logout', protect, logout);
 
 
 module.exports = router;
