@@ -36,8 +36,8 @@ exports.getMassageShop = async (req, res, next) => {
 //@route    POST /api/v1/massageShops
 //@access   Private
 exports.createMassageShop = async (req, res, next) => {
-    const hospital = await MassageShop.create(req.body);
-    res.status(201).json({ success: true, data: hospital });
+    const massageShop = await MassageShop.create(req.body);
+    res.status(201).json({ success: true, data: massageShop });
 };
 
 //@desc     Update massage shop

@@ -9,8 +9,8 @@ exports.register = async (req, res, next) => {
     const { name, email, password, role, tel } = req.body;
 
     // If email in DB, don't continue
-    if (User.find({ email: email }) != null) {
-      res.status(409).json({ success: false, message: "This email is already used." });
+    if (!User.find({ email: email })) {
+      return res.status(409).json({ success: false, message: "This email is already used." });
     }
 
     //Create User
