@@ -1,6 +1,26 @@
 const Reservation = require('../models/Reservation');
 const User = require('../models/User');
 
+function padZero(s) {
+    s = s.toString();
+    if (s.length == 1) return "0" + s;
+    return s;
+}
+
+function getCSVDate(dt) {
+    let date = padZero(0 + dt.getMonth() + 1) + "/" + padZero(dt.getDay()) + "/" + dt.getFullYear()
+    let hour = 0 + dt.getHours()
+    let time = ""
+    if (hour > 12) {
+        time = padZero(0 + dt.getHours() - 12) + ":" + padZero(dt.getMinutes()) + " PM"
+    }
+    else {
+        time = padZero(dt.getHours()) + ":" + padZero(dt.getMinutes()) + " AM"
+    }
+    return [date, time]
+}
+
+
 function reservationToRow(reservation) {
     let headers = ['Subject', 'Start Date', 'Start Time', 'End Date', 'End Time', 'All Day Event', 'Description', 'Location', 'Private'];
     let ans = {};
@@ -9,10 +29,11 @@ function reservationToRow(reservation) {
         ans[headers[i]] = '';
     }
     ans['Subject'] = "Reservation with " + reservation.massageShop.name + " massage shop.";
-    ans['Start Date'] = reservation.datetime;
+    ans['Start Date'] = getCSVDate(reservation.datetime)[0];
+    ans['Start Time'] = getCSVDate(reservation.datetime)[1];
     ans['Description'] = "Reservation made on KumaKunMassage website!";
     ans['Location'] = reservation.massageShop.address;
-    ans['Private'] = "TRUE";
+    ans['Private'] = "True";
     return ans;
 }
 
