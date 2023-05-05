@@ -8,7 +8,7 @@ function padZero(s) {
 }
 
 function getCSVDate(dt) {
-    let date = padZero(0 + dt.getMonth() + 1) + "/" + padZero(dt.getDay()) + "/" + dt.getFullYear()
+    let date = padZero(0 + dt.getMonth() + 1) + "/" + padZero(dt.getDate()) + "/" + dt.getFullYear()
     let hour = 0 + dt.getHours()
     let time = ""
     if (hour > 12) {

@@ -14,6 +14,12 @@ const ReservationSchema = new mongoose.Schema({
     datetime: {
         type: Date,
         required: [true, 'Please provide date and time of reservation.'],
+        validate: {
+            validator: function (v) {
+                return v.getTime() >= Date.now();
+            },
+            message: props => `${props.value} is before the current date!`
+        }
     }
 });
 

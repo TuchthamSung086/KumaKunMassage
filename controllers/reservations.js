@@ -39,7 +39,7 @@ exports.makeReservation = async (req, res, next) => {
         });
     } catch (err) {
         console.log(err);
-        return res.status(500).json({ success: false, message: "Cannot create reservation" });
+        return res.status(500).json({ success: false, message: "Cannot create reservation", err: err });
     }
 }
 
