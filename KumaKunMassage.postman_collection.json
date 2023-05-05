@@ -1,0 +1,627 @@
+{
+	"info": {
+		"_postman_id": "a016e59c-4bf8-4397-be54-b3cde3ac9392",
+		"name": "KumaKunMassage",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "12650844"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Register User",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Donald1\",\r\n    \"email\": \"donald1@gmail.com\",\r\n    \"password\": \"123456\",\r\n    \"role\": \"user\",\r\n    \"tel\": \"0987654321\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URLlocal}}/api/v1/auth/register",
+							"host": [
+								"{{URLlocal}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"TOKENlocal\",pm.response.json().token)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"alice@gmail.com\",\r\n    \"password\": \"123456\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URLlocal}}/api/v1/auth/login",
+							"host": [
+								"{{URLlocal}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Logged in User with Token",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKENlocal}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URLlocal}}/api/v1/auth/me",
+							"host": [
+								"{{URLlocal}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"TOKENlocal\",null)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URLlocal}}/api/v1/auth/logout",
+							"host": [
+								"{{URLlocal}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Verify",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKENlocal}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URLlocal}}/api/v1/auth/verify/t6pwoats8oactep5w46wb",
+							"host": [
+								"{{URLlocal}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"verify",
+								"t6pwoats8oactep5w46wb"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Resend Verification Token",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKENlocal}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{URLlocal}}/api/v1/auth/verify/resend",
+							"host": [
+								"{{URLlocal}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"verify",
+								"resend"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "MassageShops",
+			"item": [
+				{
+					"name": "Create New Massage Shop",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKENlocal}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"{{$randomFullName}}\",\r\n    \"address\": \"{{$randomStreetAddress}}\",\r\n    \"tel\":\"0987654321\",\r\n    \"opentime\":\"0800\",\r\n    \"closetime\":\"1700\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URLlocal}}/api/v1/massageShops",
+							"host": [
+								"{{URLlocal}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"massageShops"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Massage Shops",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URLlocal}}/api/v1/massageShops",
+							"host": [
+								"{{URLlocal}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"massageShops"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Single Massage Shop",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URLlocal}}/api/v1/massageShops/643e1cbcc9dad8ddd0ae9c17",
+							"host": [
+								"{{URLlocal}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"massageShops",
+								"643e1cbcc9dad8ddd0ae9c17"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Massage Shop",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKENlocal}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"{{$randomFullName}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URLlocal}}/api/v1/massageShops/643e1cbcc9dad8ddd0ae9c17",
+							"host": [
+								"{{URLlocal}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"massageShops",
+								"643e1cbcc9dad8ddd0ae9c17"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Single Massage Shop",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKENlocal}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{URLlocal}}/api/v1/massageShops/643e1cbcc9dad8ddd0ae9c17",
+							"host": [
+								"{{URLlocal}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"massageShops",
+								"643e1cbcc9dad8ddd0ae9c17"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Reservations",
+			"item": [
+				{
+					"name": "Create New Reservation",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKENlocal}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"datetime\":\"2023-10-07T17:00:00.000Z\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URLlocal}}/api/v1/massageShops/643e1cf70bc7bd34993d892e/reservations",
+							"host": [
+								"{{URLlocal}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"massageShops",
+								"643e1cf70bc7bd34993d892e",
+								"reservations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Reservations",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.globals.set(\"123\",\"123\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKENlocal}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URLlocal}}/api/v1/reservations",
+							"host": [
+								"{{URLlocal}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"reservations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Single Reservation",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKENlocal}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URLlocal}}/api/v1/reservations/6440e8cfb2cfcaeae52cfd86",
+							"host": [
+								"{{URLlocal}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"reservations",
+								"6440e8cfb2cfcaeae52cfd86"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Single Reservation",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKENlocal}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"massageShop\": \"643e58cc7ae6b824ef874813\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URLlocal}}/api/v1/reservations/64410185f17903a2a095ad4a",
+							"host": [
+								"{{URLlocal}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"reservations",
+								"64410185f17903a2a095ad4a"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Single Reservation",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKENlocal}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{URLlocal}}/api/v1/reservations/64410185f17903a2a095ad4a",
+							"host": [
+								"{{URLlocal}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"reservations",
+								"64410185f17903a2a095ad4a"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Calendar",
+			"item": [
+				{
+					"name": "Get CSV Row",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKENlocal}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URLlocal}}/api/v1/calendar/6440e8cfb2cfcaeae52cfd86",
+							"host": [
+								"{{URLlocal}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"calendar",
+								"6440e8cfb2cfcaeae52cfd86"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get CSV",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKENlocal}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URLlocal}}/api/v1/calendar/",
+							"host": [
+								"{{URLlocal}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"calendar",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
